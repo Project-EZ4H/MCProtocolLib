@@ -107,25 +107,6 @@ public class ServerListener extends SessionAdapter {
             }
         }
 
-        if(protocol.getSubProtocol() == SubProtocol.STATUS) {
-            if(event.getPacket() instanceof StatusQueryPacket) {
-                ServerInfoBuilder builder = event.getSession().getFlag(MinecraftConstants.SERVER_INFO_BUILDER_KEY);
-                if(builder == null) {
-                    builder = new ServerInfoBuilder() {
-                        @Override
-                        public ServerStatusInfo buildInfo(Session session) {
-                            return new ServerStatusInfo(VersionInfo.CURRENT, new PlayerInfo(0, 20, new GameProfile[]{}), Message.fromString("A Minecraft Server"), null);
-                        }
-                    };
-                }
-
-                ServerStatusInfo info = builder.buildInfo(event.getSession());
-                event.getSession().send(new StatusResponsePacket(info));
-            } else if(event.getPacket() instanceof StatusPingPacket) {
-                event.getSession().send(new StatusPongPacket(event.<StatusPingPacket>getPacket().getPingTime()));
-            }
-        }
-
         if(protocol.getSubProtocol() == SubProtocol.GAME) {
             if(event.getPacket() instanceof ClientKeepAlivePacket) {
                 ClientKeepAlivePacket packet = event.getPacket();

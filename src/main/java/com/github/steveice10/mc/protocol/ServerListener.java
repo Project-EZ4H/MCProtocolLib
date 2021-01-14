@@ -46,6 +46,8 @@ public class ServerListener extends SessionAdapter {
     private String serverId = "";
     private String username = "";
 
+    public int protocolVersion=340;
+
     private long lastPingTime = 0;
     private int lastPingId = 0;
 
@@ -64,18 +66,27 @@ public class ServerListener extends SessionAdapter {
         if(protocol.getSubProtocol() == SubProtocol.HANDSHAKE) {
             if(event.getPacket() instanceof HandshakePacket) {
                 HandshakePacket packet = event.getPacket();
+                protocolVersion=packet.getProtocolVersion();
+                boolean protocolSupport=false;
+                switch (protocolVersion){
+                    case MinecraftConstants.PROTOCOL_VERSION:{
+                        protocolSupport=true;
+                        break;
+                    }
+                    case MinecraftConstants.OLD_PROTOCOL_VERSION:{
+                        protocolSupport=true;
+                    }
+                }
+                event.getSession().setFlag(MinecraftConstants.PROTOCOL_KEY,protocolVersion);
                 switch(packet.getIntent()) {
                     case STATUS:
                         protocol.setSubProtocol(SubProtocol.STATUS, false, event.getSession());
                         break;
                     case LOGIN:
                         protocol.setSubProtocol(SubProtocol.LOGIN, false, event.getSession());
-                        if(packet.getProtocolVersion() > MinecraftConstants.PROTOCOL_VERSION) {
-                            event.getSession().disconnect("Outdated server! I'm still on " + MinecraftConstants.GAME_VERSION + ".");
-                        } else if(packet.getProtocolVersion() < MinecraftConstants.PROTOCOL_VERSION) {
-                            event.getSession().disconnect("Outdated client! Please use " + MinecraftConstants.GAME_VERSION + ".");
+                        if(!protocolSupport){
+                            event.getSession().disconnect("UNKNOWN PROTOCOL VERSION:"+protocolVersion);
                         }
-
                         break;
                     default:
                         throw new UnsupportedOperationException("Invalid client intent: " + packet.getIntent());

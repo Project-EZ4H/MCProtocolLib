@@ -1,7 +1,5 @@
 package com.github.steveice10.mc.protocol.packet.ingame.server.entity;
 
-import com.github.steveice10.mc.protocol.data.MagicValues;
-import com.github.steveice10.mc.protocol.data.game.entity.Effect;
 import com.github.steveice10.mc.protocol.packet.MinecraftPacket;
 import com.github.steveice10.packetlib.io.NetInput;
 import com.github.steveice10.packetlib.io.NetOutput;
@@ -10,7 +8,7 @@ import java.io.IOException;
 
 public class ServerEntityEffectPacket extends MinecraftPacket {
     private int entityId;
-    private Effect effect;
+    private int effect;
     private int amplifier;
     private int duration;
     private boolean ambient;
@@ -20,7 +18,7 @@ public class ServerEntityEffectPacket extends MinecraftPacket {
     private ServerEntityEffectPacket() {
     }
 
-    public ServerEntityEffectPacket(int entityId, Effect effect, int amplifier, int duration, boolean ambient, boolean showParticles) {
+    public ServerEntityEffectPacket(int entityId, int effect, int amplifier, int duration, boolean ambient, boolean showParticles) {
         this.entityId = entityId;
         this.effect = effect;
         this.amplifier = amplifier;
@@ -33,7 +31,7 @@ public class ServerEntityEffectPacket extends MinecraftPacket {
         return this.entityId;
     }
 
-    public Effect getEffect() {
+    public int getEffect() {
         return this.effect;
     }
 
@@ -56,7 +54,7 @@ public class ServerEntityEffectPacket extends MinecraftPacket {
     @Override
     public void read(NetInput in) throws IOException {
         this.entityId = in.readVarInt();
-        this.effect = MagicValues.key(Effect.class, in.readByte());
+        this.effect = in.readByte();
         this.amplifier = in.readByte();
         this.duration = in.readVarInt();
 
@@ -68,7 +66,7 @@ public class ServerEntityEffectPacket extends MinecraftPacket {
     @Override
     public void write(NetOutput out) throws IOException {
         out.writeVarInt(this.entityId);
-        out.writeByte(MagicValues.value(Integer.class, this.effect));
+        out.writeByte(this.effect);
         out.writeByte(this.amplifier);
         out.writeVarInt(this.duration);
 

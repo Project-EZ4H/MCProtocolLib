@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class VersionInfo {
     public static final VersionInfo CURRENT = new VersionInfo(MinecraftConstants.GAME_VERSION, MinecraftConstants.PROTOCOL_VERSION);
+    public static final VersionInfo OLD_VERSION = new VersionInfo(MinecraftConstants.OLD_GAME_VERSION, MinecraftConstants.OLD_PROTOCOL_VERSION);
 
     private String name;
     private int protocol;

@@ -5,6 +5,9 @@ public class MinecraftConstants {
     public static final String GAME_VERSION = "1.12.2";
     public static final int PROTOCOL_VERSION = 340;
 
+    public static final String OLD_GAME_VERSION = "1.8.9";
+    public static final int OLD_PROTOCOL_VERSION = 47;
+
     // General Key Constants
     public static final String PROFILE_KEY = "profile";
     public static final String AUTH_PROXY_KEY = "auth-proxy";
@@ -20,4 +23,6 @@ public class MinecraftConstants {
     public static final String SERVER_LOGIN_HANDLER_KEY = "login-handler";
     public static final String PING_KEY = "ping";
     public static final String SERVER_COMPRESSION_THRESHOLD = "compression-threshold";
+
+    public static final String PROTOCOL_KEY = "protocol-info";
 }
